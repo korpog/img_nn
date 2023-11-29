@@ -30,8 +30,8 @@ test_data = datasets.CIFAR10(
 )
 
 learning_rate = 0.001
-batch_size = 64
-epochs = 5
+batch_size = 10
+epochs = 2
 
 train_dataloader = DataLoader(training_data, batch_size=batch_size)
 test_dataloader = DataLoader(test_data, batch_size=batch_size)
@@ -41,11 +41,11 @@ class NeuralNetwork(nn.Module):
         super().__init__()
         self.flatten = nn.Flatten()
         self.linear_relu_stack = nn.Sequential(
-            nn.Linear(32*32*3, 512),
+            nn.Linear(32*32*3, 1024),
             nn.ReLU(),
-            nn.Linear(512, 512),
+            nn.Linear(1024, 1024),
             nn.ReLU(),
-            nn.Linear(512, 10),
+            nn.Linear(1024, 10),
         )
 
     def forward(self, x):
@@ -53,7 +53,7 @@ class NeuralNetwork(nn.Module):
         logits = self.linear_relu_stack(x)
         return logits
 
-model = NeuralNetwork().to(device)
+model = NeuralNetwork()
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
@@ -82,7 +82,7 @@ def test_loop(dataloader, model, loss_fn):
         for X, y in dataloader:
             pred = model(X)
             test_loss += loss_fn(pred, y).item()
-            correct += (pred.argmax(1) == y).type(torch.float).sum().item()
+            correct += (pred.argmax(1) == y).sum().item()
     
     test_loss /= num_batches
     correct /= size
