@@ -34,6 +34,7 @@ epochs = 5
 train_dataloader = DataLoader(training_data, batch_size=batch_size)
 test_dataloader = DataLoader(test_data, batch_size=batch_size)
 
+
 class NeuralNetwork(nn.Module):
     def __init__(self):
         super().__init__()
@@ -51,9 +52,11 @@ class NeuralNetwork(nn.Module):
         logits = self.linear_relu_stack(x)
         return logits
 
+
 model = NeuralNetwork()
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+
 
 def train_loop(dataloader, model, loss_fn, optimizer):
     size = len(dataloader.dataset)
@@ -70,6 +73,7 @@ def train_loop(dataloader, model, loss_fn, optimizer):
             loss, current = loss.item(), (batch + 1) * len(X)
             print(f"loss: {loss:5f} \t {current:5d}/{size:5d}")
 
+
 def test_loop(dataloader, model, loss_fn):
     size = len(dataloader.dataset)
     model.eval()
@@ -81,10 +85,11 @@ def test_loop(dataloader, model, loss_fn):
             pred = model(X)
             test_loss += loss_fn(pred, y).item()
             correct += (pred.argmax(1) == y).sum().item()
-    
+
     test_loss /= num_batches
     correct /= size
     print(f"Accuracy: {(100*correct):0.01f}% \t Average loss: {test_loss:5f}")
+
 
 for e in range(epochs):
     print(f"Epoch {e+1}\n")
