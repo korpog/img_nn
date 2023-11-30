@@ -1,9 +1,6 @@
 import torch
-from torch import nn
-from torchvision import datasets
-from torchvision.transforms import ToTensor, Lambda
-from torch.utils.data import DataLoader
-
+import torchvision
+import torchvision.transforms as transforms
 
 device = (
     "cuda"
