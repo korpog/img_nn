@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import torchvision.transforms as transforms
+from torchvision.transforms import ToTensor
 from torchvision import datasets
 from torch.utils.data import DataLoader
 
@@ -13,15 +13,11 @@ device = (
     else "cpu"
 )
 
-transform = transforms.Compose(
-    [transforms.ToTensor(),
-     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
-
 training_data = datasets.CIFAR10(
     root="data",
     train=True,
     download=True,
-    transform=transform,
+    transform=ToTensor(),
 
 )
 
@@ -29,13 +25,13 @@ test_data = datasets.CIFAR10(
     root="data",
     train=False,
     download=True,
-    transform=transform,
+    transform=ToTensor(),
 )
 
 classes = ('plane', 'car', 'bird', 'cat',
            'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
-learning_rate = 0.001
+learning_rate = 0.01
 batch_size = 64
 epochs = 5
 
